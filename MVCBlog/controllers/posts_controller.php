@@ -14,7 +14,7 @@ function show() {
         require_once('views/pages/error.php');die();}
 
     // on utilise l'id fourni pour obtenir le post correspondant
-    $post = Post::find($_GET['id']);
+    $post = Post::find(intval($_GET['id']));
     require_once('views/posts/show.php');
 }
 
@@ -30,7 +30,7 @@ function write() : bool {
 
         $max = 0;
         foreach ($posts as $key => $value) {
-          if(intval($value->id) > $max) {
+          if(intval($value->get('id')) > $max) {
             $max = intval($value->id);
           }
         }
@@ -39,7 +39,7 @@ function write() : bool {
 
         if ($post->Write()) {
           echo "Nouveau post ajouté avec succès";
-          $_GET['id'] = $post->id;
+          $_GET['id'] = $post->get('id');
           return true;
         }
         else {
@@ -56,12 +56,16 @@ function write() : bool {
 function delete(): bool {
   $success = Post::delete($_GET['id']);
   if ($success) {
-    header('Location: http://www-etu-info.iut2.upmf-grenoble.fr/~grosa/ProgWeb/TP%20not%c3%a9/MVCBlog/index.php?controller=posts&action=index');
+    header('Location: http://www-etu-info.iut2.upmf-grenoble.fr/~grosa/ProgWeb/Php-tp/MVCBlog/?controller=posts&action=index');
   }
   else {
       require_once('views/pages/error.php');die();
   }
   return $success;
+}
+
+function ask_delete() {
+  require_once('views/pages/error.php');
 }
 
 function actor($action) : bool {
@@ -78,6 +82,8 @@ function actor($action) : bool {
         case 'delete':
             return delete();
             break;
+        case 'ask_delete':
+            ask_delete();
         default:
             //On est obligé d'appeler directement error.php, si on appel call()
             // on créé un conflit sur actor() qui est présent dans les deux

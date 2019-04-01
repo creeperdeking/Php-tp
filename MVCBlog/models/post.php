@@ -9,19 +9,16 @@ class Post {
   // ils sont déclarés publiques pour éviter la lourdeur des accesseurs&mutateurs
   //  (et pouvoir utiliser $post->author directement)
   // C'est bien sûr à éviter dans un vrai projet
-  public $author;
-  public $content;
-  public $id; //éventuellement NULL si pas encore d’id attribué
+  private $author;
+  private $content;
+  private $id; //éventuellement NULL si pas encore d’id attribué
 
-  private $req_find;
-  private static $req_all;
-  private static $last_writen_post;
 
   // Creation d'un post
-  public function __construct($author, $content, $id=NULL) {
-    $this->author = $author;
-    $this->content = $content;
-    $this->id = $id;
+  public function __construct(string $author, string $content, $id=NULL) {
+    $this->set('author', $author);
+    $this->set('content', $content);
+    $this->set('id', $id);
   }
 
   // Retourne tous les posts dans un vecteur
@@ -32,13 +29,33 @@ class Post {
     return $req->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Post', array('author', 'content', 'id'));
   }
 
-  public function get($var_name) {
+  public function get(string $var_name) {
     switch ($var_name) {
       case 'author':
         return $this->author;
         break;
       case 'content':
         return $this->content;
+        break;
+      case 'id':
+        return $this->id;
+        break;
+      default:
+        break;
+    }
+  }
+
+  //On évite les injections SQL grâce aux setter magique sécurisé
+  public function set(string $var_name, $value) {
+    switch ($var_name) {
+      case 'author':
+        $this->author = pg_escape_string($value);
+        break;
+      case 'content':
+        $this->content = pg_escape_string($value);
+        break;
+      case 'id':
+        $this->id = intval($value);
         break;
       default:
         break;
@@ -49,12 +66,12 @@ class Post {
   public static function find(int $id): Post {
     $db = Db::getInstance();
     // On vérifie que $id est bien un entier
-    $id = intval($id);
     $req = $db->prepare('SELECT author, content, id FROM posts WHERE id = :id');
     // La requête ayant été préparée, on remplace :id avec la valeur de $id
-    $req->execute(array(':id' => $id));
-
-    return $req->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Post', array('author', 'content', 'id'))[0];
+    $req->bindParam(':id', $id);
+    $req->execute();
+    $var_ret = $req->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Post', array('author', 'content', 'id'));
+    return $var_ret[0];
   }
 
   // Enregistre le post dans la base, et renvoie vrai si l'écriture a réussi
@@ -73,14 +90,11 @@ class Post {
     $success = TRUE;
     if ($condition_ok) {
       $db = Db::getInstance();
-      // On vérifie que $id est bien un entier
-      $this->id = intval($this->id);
 
       $req = $db->prepare('INSERT INTO posts VALUES (:id, :author, :content)');
       $req->bindParam(':id', $this->id);
       $req->bindParam(':author', $this->author);
       $req->bindParam(':content', $this->content);
-      // On transforme notre classe en tableau et on le passe en paramètre à execute
       $success = $req->execute();
       $_SESSION['last_writen_post'] = clone $this;
     }
@@ -93,6 +107,9 @@ class Post {
   // Enregistre le post dans la base, et renvoie vrai si l'écriture a réussi
   public static function delete($id): bool {
     $db = Db::getInstance();
+
+    //On évite les injections SQL:
+    $id = intval($id);
 
     $req = $db->prepare('delete FROM posts WHERE id=:id');
     $req->bindParam(':id', $id);

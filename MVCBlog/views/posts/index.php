@@ -6,8 +6,8 @@
 
 foreach ($posts as $post) {
     echo "<p>";
-    echo "<a href='?controller=posts&action=show&id=$post->id'>$post->author</a>";
-    echo "<a href='?controller=posts&action=delete&id=$post->id'>Delete</a>";
+    echo "<a href='?controller=posts&action=show&id=" . $post->get('id') . "'>" . $post->get('author') . "</a>";
+    echo "<a href='?controller=posts&action=delete&id=" . $post->get('id') . "'>Delete</a>";
     echo "</p>";
 }
 ?>
