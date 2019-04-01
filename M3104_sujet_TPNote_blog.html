@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>TP noté : moteur de blog</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="author" content="Gwenn Boussard" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <p>Université Grenoble Alpes - IUT2 - Département informatique<br />
+      TP Noté Programmation WEB M3104 2018-19
+    </p>
+  </header>
+
+  <h1>TP Noté Programmation WEB M3104 2018-19 en binôme (ou trinôme après autorisation explicite de l’enseignant)</h1>
+  <p>À rendre avant le samedi <b>6 avril minuit</b></p>
+  <hr />
+
+    <h2>Patron de développement MVC</h2>
+
+    <p>On vous fournit une application de blog minimaliste (voire simpliste), qui permet d’afficher des posts (ou billets). Elle fonctionne et contient déjà deux posts (testez-la). Vous devrez la modifier et la compléter.<br />
+    Vous devrez comprendre globalement le code et sa structure générale, le modifier et le compléter.<br />
+    Pour vous aider vous pouvez dessiner un graphe des <code>include</code> et un graphe de parcours du site.<br />
+    Pensez à faire des sauvegardes intermédiaires à chaque modification majeure.<br />
+    <br /><strong>Conseil : </strong>attention, comme vous l’avez vu en cours, mais comme vous ne l’avez pas vu en TP, il y a un contrôleur frontal (qui appelle des sous-contrôleurs dédiés).<br /><br />
+    Toutes les modifications devront respecter le patron de conception MVC tel qu’enseigné en cours et TP.</p>
+    <h3>Découvrons le code :</h3>
+    <p>Les pieds de page contiennent le simple mot « Copyright », alors que l’application est diffusée sous licence MIT. Et cette mention est en dur dans le même fichier que l’entête :
+    <p>Enregistrez le pied de page dans un fichier à part qui devra être appelé (à vous de déterminer où et comment).</p>
+    <p>Modifiez la mention Copyright pour y accoler la mention « licence MIT ».</p>
+
+    <h3>Améliorations</h3>
+    <p>Avant de passer à la suite, constatez que le code est inutilement compliqué, simplifiez et améliorez-le en documentant (au fur et à mesure) dans la fiche de rendu ce que vous faites et pourquoi vous le faites. Ne négligez pas cette étape, vous vous faciliterez la vie pour la suite. C’est du temps investi, pas du temps perdu.</p>
+    <h3>Saisie d’un post</h3>
+    <p>Le site fourni permet d’afficher des posts, mais pas de les saisir. Vous allez devoir le compléter pour effectuer ces saisies.</p>
+    <h4>Ajout d’un lien</h4>
+    <p>Ajoutez le choix <code>Saisie</code> dans le menu sous forme d’un lien.</p>
+    <h4>Page de saisie</h4>
+    <p>Créez une page (statique) accessible via le lien précédent qui permet la saisie via un formulaire HTML. Le code HTML pourra ressembler à ce qui suit (à compléter)&nbsp;:</p>
+    <code>
+        &lt;p&gt;Veuillez saisir un nouveau post :&lt;/p&gt;<br />
+        &lt;form action="" method="GET"&gt;<br />
+        &lt;fieldset&gt;<br />
+        Auteur : &lt;input type="texte" name="<em><strong>À Compléter</strong></em>"&gt;&lt;br&nbsp;/&gt;<br />
+        Contenu : &lt;input type="texte" name="<em><strong>À Compléter</strong></em>"&gt;<br />
+        &lt;input type="hidden" name="action" value="<em><strong>À Compléter</strong></em>"&gt;<br />
+        &lt;input type="hidden" name="controller" value="<em><strong>À Compléter</strong></em>"&gt;<br />
+        &lt;input type="submit" value="Enregistrer"&gt;<br />
+        &lt;/fieldset&gt;<br />
+        &lt;/form&gt;<br />
+    </code>
+    <h4>Enregistrement d’un post</h4>
+    <p>Créez une page (dynamique) accessible via le formulaire précédant. Cette page devra afficher un message de réussite (ou d’erreur).</p>
+    <h4>Affichage du post enregistré</h4>
+    <p>La page précédante, en plus du message de réussite, devra afficher le post enregistré.</p>
+
+    <h3>Ajout de fonctions</h3>
+    <p>Proposez d’autres améliorations (connexions par utilisateurs, mémos privés non visibles sauf par l’utilisateur, etc.) toutes documentées dans la fiche de rendu</p>
+
+    <h2 class="noNum">Gestion des droits</h2>
+    <p>La gestion des droits lors des TPs n’était pas satisfaisante d’un point de vue sécurité, et ne permetait pas le développement à plusieurs. On vous propose un nouveau script : <code>setup-public-group</code> qui va accorder les droits en écriture au seul groupe, groupe qui contiendra les membres du binôme, Apache, et votre enseignant. Vous devez déclarer votre binôme à votre enseignant pour qu’il créé votre groupe (au sens *nix).</p>
+
+    <h2 class="noNum">Une fois le travail terminé</h2>
+    <p>Déposez la fiche de rendu remplie sur Chamilo. Ne modifiez plus votre code après la date limite, vous n’avez pas besoin de le rendre, votre enseignant viendra le consulter sur votre compte.</p>
+  </body>
+  </html>
