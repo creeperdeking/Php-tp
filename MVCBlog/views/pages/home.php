@@ -1,3 +1,5 @@
-<p>Salut <?php echo $first_name, ' ', $last_name; ?>!<p>
+<p>Salut <?php echo $_SESSION['login']; ?>!<p>
 
 <p>Tu as réussi a trouver la page principale. Bravo !</p>
+
+<a

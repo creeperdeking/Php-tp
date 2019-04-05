@@ -1,7 +1,8 @@
 <p>Veuillez saisir un nouveau post :</p>
 <form action="../../index.php" method="GET">
   <fieldset>
-    Auteur : <input type="texte" name="author"><br />
+    <input type="hidden" name="author" value=<?php session_start(); echo $_SESSION['login']; ?>>
+    Titre : <input type="texte" name="title">
     Contenu : <input type="texte" name="content">
     <input type="hidden" name="action" value="write">
     <input type="hidden" name="controller" value="posts">

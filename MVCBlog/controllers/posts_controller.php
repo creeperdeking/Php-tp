@@ -21,21 +21,22 @@ function show() {
 function write() : bool {
     //Méthode pour enregistrer le post courant
 
-    if (isset($_GET['author']) && isset($_GET['content'])) {
+    if (isset($_GET['author']) && isset($_GET['content']) && isset($_GET['title'])) {
         //On récupère les paramètres dans l'url...
         $author = $_GET['author'];
         $content = $_GET['content'];
+        $title = $_GET['title'];
 
         $posts = Post::all();
 
         $max = 0;
         foreach ($posts as $key => $value) {
           if(intval($value->get('id')) > $max) {
-            $max = intval($value->id);
+            $max = intval($value->get('id'));
           }
         }
 
-        $post = new Post($author, $content, $max + 1);
+        $post = new Post($author, $title, $content, $max + 1);
 
         if ($post->Write()) {
           echo "Nouveau post ajouté avec succès";
@@ -55,6 +56,7 @@ function write() : bool {
 
 function delete(): bool {
   $success = Post::delete($_GET['id']);
+  echo 'µOK';
   if ($success) {
     header('Location: http://www-etu-info.iut2.upmf-grenoble.fr/~grosa/ProgWeb/Php-tp/MVCBlog/?controller=posts&action=index');
   }
@@ -65,7 +67,7 @@ function delete(): bool {
 }
 
 function ask_delete() {
-  require_once('views/pages/error.php');
+  require_once('views/pages/confirm_delete.php');
 }
 
 function actor($action) : bool {
@@ -84,6 +86,7 @@ function actor($action) : bool {
             break;
         case 'ask_delete':
             ask_delete();
+            break;
         default:
             //On est obligé d'appeler directement error.php, si on appel call()
             // on créé un conflit sur actor() qui est présent dans les deux

@@ -6,8 +6,11 @@
 
 foreach ($posts as $post) {
     echo "<p>";
-    echo "<a href='?controller=posts&action=show&id=" . $post->get('id') . "'>" . $post->get('author') . "</a>";
-    echo "<a href='?controller=posts&action=delete&id=" . $post->get('id') . "'>Delete</a>";
+    echo "<a href='?controller=posts&action=show&id=" . $post->get('id') . "'>" . $post->get('title') . "</a>";
+
+    if ($_SESSION['login'] === $post->get('author')) {
+      echo "<a href='?controller=posts&action=ask_delete&id=" . $post->get('id') . "'>Delete</a>";
+    }
     echo "</p>";
 }
 ?>

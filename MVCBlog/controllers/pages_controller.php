@@ -13,8 +13,10 @@ function error() {
     require_once('views/pages/error.php');
 }
 
-function write() {
-  //////////////// A COMPLETER ////////////////
+function deconnexion() {
+  unset($_SESSION['login']);
+  session_destroy();
+  require_once('views/pages/deconnexion.php');
 }
 
 function actor($action) : bool {
@@ -27,6 +29,9 @@ function actor($action) : bool {
             break;
         case 'error':
             error();
+            break;
+        case 'deconnexion':
+            deconnexion();
             break;
         default:
             error();
